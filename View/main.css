@@ -1,0 +1,88 @@
+* {
+	
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+
+body {
+	background: #454545;
+}
+
+#startscreen, #finishscreen {
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	border: 1px solid white;
+	width: 800px;
+	height: 300px;
+}
+
+.message {
+	margin-top: 120px;
+	text-align: center;
+	font-size: 24px;
+	color: white;
+}
+
+.qr {
+	position: absolute;
+	top: 0;
+}
+.qr.one {
+	left: 0;
+}
+.qr.two {
+	right: 0;
+}
+
+#field {
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	border: 1px solid black;
+	background: white;
+}
+
+.pad {
+	position: absolute;
+	width: 10px;
+	height: 10%;
+}
+
+.pad.one {
+	background: red;
+	left: 0;
+}
+
+.pad.two {
+	right: 0;
+	background: blue;
+}
+
+#ball {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	-webkit-border-radius: 100% 100%;
+	background: black;
+}
+
+#score {
+	position: absolute;
+	bottom: -30px;
+	left: 50%;
+	height: 20px;
+	background: green;
+}
+#score > div {
+	position: absolute;
+	top: 0;
+}
+#score > div.one {
+	right: 10px;
+}
+#score > div.two {
+	left: 10px;
+}
