@@ -2,6 +2,19 @@
 
 Ninja Pong Code Camp
 
+# File structure
+
+```
+apps
+├── android   -> Android controller app
+├── ios       -> iOS controller app
+└── web       -> Web display
+
+assets
+├── fonts     -> Common fonts
+└── sounds    -> Common sounds
+```
+
 # UDP Server Demo
 
 ```
