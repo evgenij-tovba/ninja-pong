@@ -1,3 +1,5 @@
+// TODO add some sort of state pattern for showing and hiding corresponding views (and get rid of resetStartScreen() )
+
 //(function($) {
 
 	var cfg = {
@@ -48,6 +50,7 @@
 		
 		// create views
 		initStartScreen();
+		initReadyScreen();
 		initGame();
 		initFinishScreen();
 
@@ -67,6 +70,7 @@
 		
 		dom.startScreen = document.createElement('div');
 		dom.startScreen.id = 'startscreen';
+		dom.startScreen.className = 'view';
 		dom.body.appendChild(dom.startScreen);
 		
 		dom.qr_one = document.createElement('div');
@@ -82,10 +86,27 @@
 		util.hide(dom.startScreen);
 	}
 
+	function initReadyScreen() {
+
+		dom.readyScreen = document.createElement('div');
+		dom.readyScreen.id = 'readyscreen';
+		dom.readyScreen.className = 'view';
+		dom.body.appendChild(dom.readyScreen);
+
+		var msg = document.createElement('div');
+		msg.className = 'message';
+		msg.innerHTML = 'Get ready!';
+
+		dom.readyScreen.appendChild(msg);
+
+		util.hide(dom.readyScreen);
+	}
+
 	function resetStartScreen() {
 
 		util.hide(dom.field);
 		util.hide(dom.finishScreen);
+		util.hide(dom.readyScreen);
 
 		util.show(dom.qr_one);
 		util.show(dom.qr_two);
@@ -149,6 +170,7 @@
 
 		dom.finishScreen = document.createElement('div');
 		dom.finishScreen.id = 'finishscreen';
+		dom.finishScreen.className = 'view';
 		dom.body.appendChild(dom.finishScreen);
 		
 		var msg = document.createElement('div');
@@ -197,10 +219,7 @@
 		playerCnt++;
 		
 		if(playerCnt === 2) {
-			var msg = document.createElement('div');
-			msg.className = 'message';
-			msg.innerHTML = 'Ready... be prepared!';
-			dom.startScreen.appendChild(msg);
+			util.show(dom.readyScreen);
 		}
 	}
 	
@@ -210,8 +229,9 @@
 	
 	function onGameStart() {
 		util.hide(dom.startScreen);
+		util.hide(dom.readyScreen);
 		util.hide(dom.finishScreen);
-		//util.hide(dom.readyScreen);
+
 		util.show(dom.field);
 	}
 	
