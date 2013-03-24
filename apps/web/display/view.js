@@ -6,7 +6,8 @@
 		fieldWidth:		800,
 		fieldHeight:	400,
 		padHeightRel:	.2,
-		ballRadius:		7
+		ballRadius:		7,
+		netWidth: 		0.008,
 	};
 	
 	var dom = {};
@@ -68,6 +69,14 @@
 		dom.field.id = 'field';
 		dom.field.style.width = cfg.fieldWidth + 'px';
 		dom.field.style.height = cfg.fieldHeight + 'px';
+
+		var net = document.createElement('div'),
+			w_net = cfg.netWidth * cfg.fieldWidth;
+		net.id = 'net';
+		net.style.borderWidth = w_net + 'px';
+		net.style.left = (cfg.fieldWidth - w_net) / 2 + 'px';
+
+		dom.field.appendChild(net);
 		
 		dom.body.appendChild(dom.field);
 		
@@ -109,12 +118,15 @@
 	var dat, ctrl;
 	function onCoreMessage(evt) {
 		
-		console.log(evt);
+		var dat = new Int32Array(evt.data);
+
+		console.log(dat);
+
 		
-		onPadUpdate(true, evt.data);
+		// onPadUpdate(true, evt.data);
 		return;
 
-		dat = evt.data;
+
 		if(dat.length != 16) { // TODO replace with the real required length
 			return;
 		}

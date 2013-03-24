@@ -7,14 +7,14 @@
 
 
 body {
-	background: #454545;
+	background: black;
 }
 
 #startscreen, #finishscreen {
 	position: absolute;
 	top: 30px;
 	left: 30px;
-	border: 1px solid white;
+	/*border: 1px solid white;*/
 	width: 800px;
 	height: 300px;
 }
@@ -41,37 +41,51 @@ body {
 	position: absolute;
 	top: 30px;
 	left: 30px;
-	border: 1px solid black;
-	background: white;
+	/*border: 1px solid black;*/
+	/*background: white;*/
+	background: black;
+}
+
+#net {
+	position: absolute;
+	height: 100%;
+	border-style: dashed;
+	border-color: white;
 }
 
 .pad {
 	position: absolute;
-	width: 10px;
+	background: white;
+	width: 15px;
 	height: 10%;
 }
 
 .pad.one {
-	background: red;
+	/*background: red;*/
 	left: 0;
+	top: 0;
+	width: 1%
+	height: 100%;
+	border: 
+
 }
 
 .pad.two {
+	/*background: blue;*/
 	right: 0;
-	background: blue;
 }
 
 #ball {
 	position: absolute;
 	width: 10px;
 	height: 10px;
-	-webkit-border-radius: 100% 100%;
-	background: black;
+	-webkit-border-radius: 30%;
+	background: white;
 }
 
 #score {
 	position: absolute;
-	bottom: -30px;
+	bottom: -40px;
 	left: 50%;
 	height: 20px;
 	background: green;
@@ -79,10 +93,19 @@ body {
 #score > div {
 	position: absolute;
 	top: 0;
+	color: white;
+	font-family: monospace;
+	font-size: 40px;
 }
 #score > div.one {
-	right: 10px;
+	right: 45px;
 }
 #score > div.two {
-	left: 10px;
+	left: 45px;
+}
+
+
+/** effects n' stuff n' shizzle */
+.glow {
+	box-shadow: 5px 0 0 rgba(255, 255, 255, 0.3);
 }
