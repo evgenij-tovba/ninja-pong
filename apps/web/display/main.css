@@ -22,8 +22,18 @@ body {
 .message {
 	margin-top: 120px;
 	text-align: center;
+	font-family: monospace;
 	font-size: 24px;
 	color: white;
+}
+
+#finishscreen .message {
+	margin-top: 90px;
+}
+
+#finishscreen .message.winner {
+	margin-top: 25px;
+	font-size: 50px;
 }
 
 .qr {

@@ -1,5 +1,5 @@
 //(function($) {
-	
+
 	var cfg = {
 		winScore:		5,
 		loginAddress:	'http://localhost:12345',
@@ -9,6 +9,17 @@
 		ballRadius:		7,
 		netWidth: 		0.008,
 	};
+
+	var util = {
+		show: function(el) {
+			el.style.visibility = 'visible';
+		},
+		hide: function(el) {
+			el.style.visibility = 'hidden';
+		},
+	};
+
+
 	
 	var dom = {};
 	var playerCnt = 0;
@@ -35,7 +46,12 @@
 		
 		dom.body = document.querySelector('body');
 		
+		// create views
 		initStartScreen();
+		initGame();
+		initFinishScreen();
+
+		util.show(dom.startScreen);
 	});
 	
 	function initStartScreen() {
@@ -62,6 +78,18 @@
 		dom.qr_two.className = 'qr two';
 		dom.startScreen.appendChild(dom.qr_two);
 		$(dom.qr_two).qrcode(cfg.loginAddress);
+
+		util.hide(dom.startScreen);
+	}
+
+	function resetStartScreen() {
+
+		util.hide(dom.field);
+		util.hide(dom.finishScreen);
+
+		util.show(dom.qr_one);
+		util.show(dom.qr_two);
+		util.show(dom.startScreen);
 	}
 	
 	function initGame() {
@@ -79,6 +107,8 @@
 		dom.field.appendChild(net);
 		
 		dom.body.appendChild(dom.field);
+
+		util.hide(dom.field);
 		
 		var padHeightAbs = cfg.fieldHeight * cfg.padHeightRel;
 		
@@ -112,7 +142,26 @@
 		dom.score_two = document.createElement('div');
 		dom.score_two.className = 'two';
 		dom.score_two.innerHTML = scores.two;
-		dom.score.appendChild(dom.score_two);
+		dom.score.appendChild(dom.score_two);		
+	}
+
+	function initFinishScreen() {
+
+		dom.finishScreen = document.createElement('div');
+		dom.finishScreen.id = 'finishscreen';
+		dom.body.appendChild(dom.finishScreen);
+		
+		var msg = document.createElement('div');
+		msg.className = 'message';
+		msg.innerHTML = 'And ze winner is...';
+		dom.finishScreen.appendChild(msg);
+
+		var msgWinner = document.createElement('div');
+		msgWinner.className = 'message winner';
+		dom.winner = msgWinner;
+		dom.finishScreen.appendChild(msgWinner);
+
+		util.hide(dom.finishScreen);
 	}
 	
 	var dat, ctrl;
@@ -140,9 +189,9 @@
 	function onPlayerLogin(isLeft) {
 		
 		if(isLeft) {
-			dom.startScreen.removeChild(dom.qr_one);
+			util.hide(dom.qr_one);
 		}else {
-			dom.startScreen.removeChild(dom.qr_two);
+			util.hide(dom.qr_two);
 		}
 		
 		playerCnt++;
@@ -160,28 +209,26 @@
 	}
 	
 	function onGameStart() {
-		initGame();
+		util.hide(dom.startScreen);
+		util.hide(dom.finishScreen);
+		//util.hide(dom.readyScreen);
+		util.show(dom.field);
 	}
 	
 	function onGameFinished(isLeftWinner) {
 		
-		dom.field.style.display = 'none';
-		dom.startScreen.style.display = 'none';
-		
-		var winnerTxt = isLeftWinner ? 'LINKS' : 'RECHTS';
-		
-		dom.finishScreen = document.createElement('div');
-		dom.finishScreen.id = 'finishscreen';
-		dom.body.appendChild(dom.finishScreen);
-		
-		var msg = document.createElement('div');
-		msg.className = 'message';
-		msg.innerHTML = 'And ze winner is: ' + winnerTxt;
-		dom.finishScreen.appendChild(msg);
+		util.hide(dom.field);
+		util.hide(dom.startScreen);
+
+		var winnerTxt = 'Player ' + (isLeftWinner ? 1 : 2) + '!';
+		dom.winner.innerHTML = winnerTxt;
+
+		util.show(dom.finishScreen);
 	}
 	
 	function onGameAborted(hasLeftLeft) {
-		initStartScreen();
+		
+		resetStartScreen();
 	}
 	
 	function onPadUpdate(isLeft, pos) {
@@ -212,9 +259,8 @@
 	
 
 	
-	/** to test stuff */
+	/** to test stuff
 	setTimeout(function() {
-		onCoreMessage({data: '01020304AABBCCDD'});
 		onPlayerLogin(false);
 	}, 300);
 
@@ -223,7 +269,9 @@
 	}, 700);
 	
 	setTimeout(function() {
+		return;
 		onGameStart();
+
 		var i=0;
 		var iv = setInterval(function() {
 			onBallUpdate({x: ((Math.cos(i/10) + 1) / 2), y: ((Math.sin(i/10) + 1) / 2)});
@@ -241,6 +289,6 @@
 	setInterval(function() {
 		onPointScored(Math.random() > 0.5);
 	}, 1500);
-	
+	 */
 	
 //})(jQuery);
