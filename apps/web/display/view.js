@@ -28,6 +28,7 @@
 	var scores = {one: 0, two: 0};
 	
 	var conn = new WebSocket('ws://192.168.64.174:8005');
+	conn.binaryType = 'arraybuffer';
 	
 	conn.onopen = function() {
 		console.log('connection opened!');
@@ -75,13 +76,29 @@
 		
 		dom.qr_one = document.createElement('div');
 		dom.qr_one.className = 'qr one';
-		dom.startScreen.appendChild(dom.qr_one);
-		$(dom.qr_one).qrcode(cfg.loginAddress);
+
+		var half = document.createElement('div');
+		half.className = 'half_width qr_wrap';
+
+		dom.startScreen.appendChild(half).appendChild(dom.qr_one);
+		
 		
 		dom.qr_two = document.createElement('div');
 		dom.qr_two.className = 'qr two';
-		dom.startScreen.appendChild(dom.qr_two);
+
+		half = document.createElement('div');
+		half.className = 'half_width qr_wrap';
+
+		dom.startScreen.appendChild(half).appendChild(dom.qr_two);
+
+		// generate QR codes
+		$(dom.qr_one).qrcode(cfg.loginAddress);
 		$(dom.qr_two).qrcode(cfg.loginAddress);
+
+		var msg = document.createElement('div');
+		msg.className = 'message full_width';
+		msg.innerHTML = 'Scan one of the codes to join the game!';
+		dom.startScreen.appendChild(msg);
 
 		util.hide(dom.startScreen);
 	}
@@ -189,10 +206,19 @@
 	var dat, ctrl;
 	function onCoreMessage(evt) {
 		
-		var dat = new Int32Array(evt.data);
+		var dat = new Uint32Array(evt.data);
 
 		console.log(dat);
 
+
+		switch(dat[0]) {
+
+case 8: // pad position change
+
+onPadUpdate(dat[1] === 1, dat[2] / Math.pow(2, 32));
+
+
+		}
 		
 		// onPadUpdate(true, evt.data);
 		return;
@@ -239,6 +265,7 @@
 		
 		util.hide(dom.field);
 		util.hide(dom.startScreen);
+		util.hide(dom.readyScreen);
 
 		var winnerTxt = 'Player ' + (isLeftWinner ? 1 : 2) + '!';
 		dom.winner.innerHTML = winnerTxt;
